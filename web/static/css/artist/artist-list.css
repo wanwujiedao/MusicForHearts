@@ -1,0 +1,101 @@
+#artist_country{
+    width: 18%;
+    height: 450px;
+    margin-left:2% ;
+    margin-top:50px ;
+    border-radius:20px ;
+    background-color: #000000 ;
+    padding-top: 30px;
+}
+#artist_country>a{
+    border-radius:8px ;
+    display: block;
+    width: 50%;
+    height: 10%;
+    line-height: 280%;
+    margin:30px 25%;
+    background-color: #AA6708;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    color: #F6F6F6;
+    transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    -webkit-transition: 0.2s ease-out;
+    cursor: hand;
+}
+
+#artist_country>a:hover{
+    color: #000000;
+    background-color: #D58512;
+    transform:  scaleX(0.8);
+    -ms-transform:   scaleX(0.8);
+    -moz-transform:  scaleX(0.8);
+    -webkit-transform:  scaleX(0.8);
+}
+
+.artist_country-a-click{
+    color: #FFFFFF !important;
+    background-color: #000000 !important;
+    animation: blink .75s linear infinite;
+    -webkit-animation: blink .75s linear infinite;
+    -moz-animation: blink .75s linear infinite;
+    -ms-animation: blink .75s linear infinite;
+    -o-animation: blink .75s linear infinite;
+}
+
+@keyframes blink{
+    0%{opacity: 1;}
+    50%{opacity: 1;}
+    50.01%{opacity: 0;}
+    100%{opacity: 0;}
+}
+
+
+@-webkit-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-moz-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-ms-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-o-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+#artist_content{
+    width: 80%;
+    float: right;
+}
+
+
+.artist_list{
+    width: 90%;
+    margin: auto;
+    padding-top:100px ;
+    height: 350px;
+}
+
+.artist_search{
+    width: 320px;
+    margin: auto;
+
+    margin-top:50px;
+}

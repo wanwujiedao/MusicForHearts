@@ -1,0 +1,125 @@
+#usercenter-menu {
+	position: fixed;
+	display: block;
+	z-index: 50;
+	left: -200px;
+	top: 150px;
+	width: 150px;
+}
+
+#usercenter-menu>li {
+	display: block;
+	width: 150px;
+	text-align: center;
+	/*float: left;*/
+	list-style-type: none;
+}
+
+#usercenter-menu>li>a {
+	display: block;
+	width: 120px;
+	line-height: 40px;
+	text-decoration: none;
+	color: #FFFFFF;
+	border-radius: 12px;
+	margin: 20px 15px;
+	border: 1px solid #000000;
+	background-color: #FFB90F;
+}
+
+#usercenter-menu>li>a:hover,
+.slidemybtn:hover {
+	background: -webkit-linear-gradient(left top, #FFF000, #FFFFFF);
+	/* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(bottom right, #FFF000, #FFFFFF);
+	/* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(bottom right, #FFF000, #FFFFFF);
+	/* Firefox 3.6 - 15 */
+	background: linear-gradient(to bottom right, #FFF000, #FFFFFF);
+	/* 标准的语法 */
+	color: #000000;
+	cursor: hand;
+
+}
+
+.menuactive {
+	background: -webkit-linear-gradient(left, #BF3EFF, #8968CD);
+	/* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #BF3EFF, #8968CD);
+	/* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #ff68be, #5766cd);
+	/* Firefox 3.6 - 15 */
+	background: linear-gradient(to right, #BF3EFF, #8968CD);
+	/* 标准的语法 */
+}
+
+
+/*第一屏*/
+
+.user-hide {
+	display: none;
+}
+
+.user-wrap {
+	margin-top: 100px;
+}
+
+#user-info {
+	margin-top: 300px;
+	line-height: 30px;
+}
+
+.user-basic,
+#user-avatar {
+	height: 270px;
+}
+
+#user-avatar img {
+	width: 100%;
+	height: 100%;
+	border-radius: 15px;
+}
+
+.user-basic> div {
+	margin-top: 12px;
+}
+
+
+
+/*第二屏*/
+
+.slidemybtn {
+	position: relative;
+	display: block;
+	width: 80px;
+	line-height: 30px;
+	border-radius: 10px;
+	color: #FFFFFF;
+	border: 1px solid #000000;
+	background: -webkit-linear-gradient(left, #BF3EFF, #8968CD);
+	/* Safari 5.1 - 6.0 */
+	background: -o-linear-gradient(right, #BF3EFF, #8968CD);
+	/* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(right, #BF3EFF, #8968CD);
+	/* Firefox 3.6 - 15 */
+	background: linear-gradient(to right, #BF3EFF, #8968CD);
+	left:90%;
+	top: 200px;
+	z-index: 20;
+}
+
+
+
+.dao-section,
+.dao-slide {
+	width: 100%;
+	height: auto;
+}
+
+.dao-slide {
+	float: left;
+}
+
+
+
+

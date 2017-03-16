@@ -1,0 +1,22 @@
+#register_content{
+	background-color: #FFFFFF;
+	/*background: #CCCCCC;
+	background: -webkit-gradient( linear, left top, left bottom, from( #BDBDBD ), to( #fff ) );
+	background: -webkit-linear-gradient( top, #BDBDBD, #fff );
+	background: -moz-linear-gradient( top, #BDBDBD, #fff );
+	background: -ms-radial-gradient( top, #BDBDBD, #fff );
+	background: -o-linear-gradient( top, #BDBDBD, #fff );
+	background: linear-gradient( top, #BDBDBD, #fff );*/
+}
+.song_font{
+	color: #ADADAD;
+}
+.col-md-8{
+	padding: 50px;
+}
+.flag-img-box{
+	line-height: 35px;
+}
+.flag-img-box img{
+	vertical-align: middle;
+}

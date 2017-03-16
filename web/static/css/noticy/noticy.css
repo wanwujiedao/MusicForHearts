@@ -1,0 +1,61 @@
+.noticy-list {
+    margin-top: 50px;
+}
+
+.noticy-wrap {
+    position: fixed;
+    z-index: 120;
+    width: 100%;
+    left: 100%;
+    display: none;
+}
+
+.noticy-detail {
+    width: 600px;
+    height: 500px;
+    padding-top: 5px;
+    background: #006400;
+    border: 1px solid #9400D3;
+    border-radius: 12px;
+    margin: auto;
+    z-index: 200;
+}
+
+.noticy-cont {
+    height: 65%;
+    font-size: 20px;
+}
+
+.noticy-dao {
+
+    width: 100%;
+}
+
+.noticy-dao > span {
+    color: #FFFF00;
+}
+
+span.btn-dao,span.dao-ope {
+    width: 65px;
+    text-align: center;
+    border: 1px solid #C71585;
+    border-radius: 6px;
+    cursor: hand;
+    transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    -webkit-transition: 0.2s ease-out;
+}
+
+span.btn-dao:hover {
+    background-color: #8A2BE2;
+    color: #000000;
+}
+span.dao-ope:hover{
+    background-color: #e2736a;
+    color: #dbf4cb;
+}
+
+.addClick {
+    background-color: #2F4F4F !important;
+    color: #E6E6FA !important;
+}

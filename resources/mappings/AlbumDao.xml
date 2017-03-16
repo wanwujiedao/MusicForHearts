@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.music.mapper.AlbumDao">
+    <select id="findById" resultType="Album" parameterType="Album">
+      select a.id albumid,a.name albumname,b.name albumartist,a.info albuminfo,a.createtime albumaddtime,c.url albumposter  from TB_ALBUM a left join TB_ARTIST b on a.artistid=b.id left join TB_MYFILE c on a.poster=c.id where a.id=#{albumid}
+    </select>
+
+    <select id="find" parameterType="com.dao.music.base.daomain.Page" resultType="Album">
+ select * from (select ROW_NUMBER()OVER(order by a.id) rownum,  a.id albumid,a.name albumname,b.name albumartist,a.info albuminfo,a.createtime albumaddtime,c.url albumposter  from TB_ALBUM a left join TB_ARTIST b on a.artistid=b.id left join TB_MYFILE c on a.poster=c.id  where a.artistid=#{artistid})A  where A.rownum between  #{pagestart} and #{pageend}
+    </select>
+
+
+    <select id="getTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        SELECT count(*) from TB_ALBUM a left join TB_ARTIST b on a.artistid=b.id left join TB_MYFILE c on a.poster=c.id  where a.artistid=#{artistid}
+    </select>
+</mapper>

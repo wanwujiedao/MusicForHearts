@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.music.mapper.NoticyDao">
+
+    <select id="find" parameterType="com.dao.music.base.daomain.Page" resultType="Noticy">
+        select A.*,TB_USER.name targetname from (select ROW_NUMBER()OVER(order by TB_NOTICY.id) rownum,
+        TB_NOTICY.*,TB_USER.name creatorname from TB_NOTICY left join TB_USER on TB_NOTICY.creator=TB_USER.id
+        <where>
+            <if test="userid!=null and userid!=''or userid==0">
+            TB_NOTICY.target=#{userid}
+            </if>
+            <if test="userid!=null and userid!='' or userid==0">
+            and TB_NOTICY.noticyflag &gt; 0
+            </if>
+        </where>
+ )A left join TB_USER on
+        A.target=TB_USER.id where A.rownum between #{pagestart} and #{pageend}
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        select COUNT(*) from TB_NOTICY left join TB_USER on TB_NOTICY.creator=TB_USER.id
+        <where>
+            <if test="userid!=null and userid!='' or userid==0">
+                TB_NOTICY.target=#{userid}
+            </if>
+            <if test="userid!=null and userid!='' or userid==0">
+                and TB_NOTICY.noticyflag &gt; 0
+            </if>
+        </where>
+    </select>
+
+    <select id="findDelete" parameterType="com.dao.music.base.daomain.Page" resultType="Noticy">
+        select A.*,TB_USER.name targetname from (select ROW_NUMBER()OVER(order by TB_NOTICY.id) rownum,
+        TB_NOTICY.*,TB_USER.name creatorname from TB_NOTICY left join TB_USER on TB_NOTICY.creator=TB_USER.id where
+        TB_NOTICY.target=#{userid} and TB_NOTICY.noticyflag =0)A left join TB_USER on
+        A.target=TB_USER.id where A.rownum between #{pagestart} and #{pageend}
+    </select>
+    <select id="getTotalDelete" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        select COUNT(*) from TB_NOTICY left join TB_USER on TB_NOTICY.creator=TB_USER.id where
+        TB_NOTICY.target=#{userid} and (TB_NOTICY.noticyflag &gt; 0 or TB_NOTICY.noticyflag is null)
+    </select>
+
+    <update id="update" parameterType="Noticy">
+        UPDATE TB_NOTICY
+        <set>
+            <if test="creator != null and creator!= ''">
+                creator=#{creator},
+            </if>
+            <if test="target != null and target!= '' or target==0">
+                target=#{target},
+            </if>
+            <if test="title != null and title!= ''">
+                title=#{title},
+            </if>
+            <if test="notice != null and notice!= ''">
+                notice=#{notice},
+            </if>
+            <if test="addtime != null and addtime!= ''">
+                addtime=#{addtime},
+            </if>
+            <if test="noticyflag != null and noticyflag!= ''or noticyflag==0">
+                noticyflag=#{noticyflag},
+            </if>
+        </set>
+        where TB_NOTICY.id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Noticy">
+         DELETE FROM TB_NOTICY WHERE TB_NOTICY.id=#{id}
+    </delete>
+
+    <select id="findById" parameterType="Noticy" resultType="Noticy">
+
+        SELECT *,TB_USER.name targetname FROM TB_NOTICY LEFT JOIN TB_USER ON TB_NOTICY.target=TB_USER.id WHERE TB_NOTICY.id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="Noticy">
+        INSERT INTO TB_NOTICY(
+        <trim suffixOverrides=",">
+          <if test="creator==0 or creator!='' and creator!=null">
+              creator,
+          </if>
+            <if test="target==0 or target!='' and target!=null">
+                target,
+            </if>
+            <if test="title!='' and title!=null">
+                title,
+            </if>
+            <if test="notice!='' and notice!=null">
+                notice,
+            </if>
+            <if test="addtime!='' and addtime!=null">
+                addtime,
+            </if>
+            <if test="noticyflag==0 or noticyflag!='' and noticyflag!=null">
+                noticyflag
+            </if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="creator==0 or creator!='' and creator!=null">
+                #{creator},
+            </if>
+            <if test="target==0 or target!='' and target!=null">
+                #{target},
+            </if>
+            <if test="title!='' and title!=null">
+                #{title},
+            </if>
+            <if test="notice!='' and notice!=null">
+                #{notice},
+            </if>
+            <if test="addtime!='' and addtime!=null">
+                #{addtime},
+            </if>
+            <if test="noticyflag==0 or noticyflag!='' and noticyflag!=null">
+                #{noticyflag}
+            </if>
+        </trim>
+
+        )
+    </insert>
+</mapper>

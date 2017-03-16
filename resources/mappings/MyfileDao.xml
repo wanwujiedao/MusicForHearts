@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.music.mapper.MyfileDao">
+
+    <insert id="insert" parameterType="Myfile">
+        INSERT INTO TB_MYFILE(
+        <trim suffixOverrides=",">
+            <if test="path!=null and path!=''">
+                path,
+            </if>
+            <if test="url!=null and url!=''">
+                url,
+            </if>
+            <if test="size!=null and size!=''">
+                size,
+            </if>
+            <if test="addtime!=null and addtime!=''">
+                addtime,
+            </if>
+            <if test="filetype!=null and filetype!='' or filetype==0">
+                filetype
+            </if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="path!=null and path!=''">
+                #{path},
+            </if>
+            <if test="url!=null and url!=''">
+                #{url},
+            </if>
+            <if test="size!=null and size!=''">
+                #{size},
+            </if>
+            <if test="addtime!=null and addtime!=''">
+                #{addtime},
+            </if>
+            <if test="filetype!=null and filetype!='' or filetype==0">
+                #{filetype,javaType=INTEGER,jdbcType=SMALLINT},
+            </if>
+        </trim>
+        )
+    </insert>
+
+
+    <select id="getMyfileIDByPath" resultType="java.lang.Long" parameterType="java.lang.String">
+        SELECT TB_MYFILE.id FROM TB_MYFILE WHERE TB_MYFILE.path=#{path}
+    </select>
+
+    <select id="findById" parameterType="Myfile" resultType="Myfile">
+        SELECT * FROM TB_MYFILE WHERE TB_MYFILE.id=#{id}
+    </select>
+
+</mapper>

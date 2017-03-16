@@ -1,0 +1,45 @@
+.carouselimg {
+	width: 100%;
+}
+
+a.myarrow {
+	width: 80px;
+	line-height: 50px;
+	height: 50px;
+	top:45%;
+	font-size: 50px;
+	padding-top: -20px;
+}
+
+h3,p.text{
+	color:#00BFFF;
+}
+
+.mymv{
+	display: block;
+	margin-top:75px ;
+	width: 80px;
+	line-height: 50px;
+	height: 50px;
+	font-size: 50px;
+	padding-top: -20px;
+	transition: 0.2s ease-out;
+	-moz-transition: 0.2s ease-out;
+	-webkit-transition: 0.2s ease-out;
+
+}
+.mymv:hover{
+	color: green;
+	transform:  scale(1.2);
+	-ms-transform: scale(1.2);
+	-moz-transform:  scale(1.2);
+	-webkit-transform: scale(1.2);
+}
+
+.home-bar{
+	font-family:华文琥珀;
+	font-size: 40px;
+	margin: 15px;
+	margin-left: 50px;
+	color: #53c27c;
+}

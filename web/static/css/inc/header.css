@@ -1,0 +1,149 @@
+* {
+    font-family: 华文新魏;
+
+}
+
+#keyword {
+    border-radius: 25px;
+    padding-right: 35px;
+    background-color: #696969;
+    color: #ffffcc;
+   
+}
+
+#search {
+    margin-left: -35px;
+    color: #8B7D7B;
+    transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    -webkit-transition: 0.2s ease-out;
+}
+
+#search:hover {
+    color: #0000CD;
+    transform: rotate(360deg) scale(1.2);
+    -ms-transform: rotate(360deg) scale(1.2);
+    -moz-transform: rotate(360deg) scale(1.2);
+    -webkit-transform: rotate(360deg) scale(1.2);
+}
+
+
+#noticy {
+    animation: blink .75s linear infinite;
+    -webkit-animation: blink .75s linear infinite;
+    -moz-animation: blink .75s linear infinite;
+    -ms-animation: blink .75s linear infinite;
+    -o-animation: blink .75s linear infinite;
+
+}
+
+nav {
+    margin-bottom: 0px !important;
+}
+
+.glyphicon, img {
+    transition: 0.4s ease-out;
+    -moz-transition: 0.4s ease-out;
+    -webkit-transition: 0.4s ease-out;
+}
+
+.glyhover {
+    transform: rotate(360deg) scale(1.25);
+    -ms-transform: rotate(360deg) scale(1.25);
+    -moz-transform: rotate(360deg) scale(1.25);
+    -webkit-transform: rotate(360deg) scale(1.25);
+}
+
+
+
+#keyword:focus {
+    color: #d43f3a;
+    transition: border linear .2s, box-shadow linear .5s;
+    background: #FFFFFF;
+    -moz-transition: border linear .2s, -moz-box-shadow linear .5s;
+    -webkit-transition: border linear .2s, -webkit-box-shadow linear .5s;
+    outline: none;
+    border-color: rgba(93, 149, 242, .75);
+    box-shadow: 0 0 8px rgba(93, 149, 242, .105);
+    -moz-box-shadow: 0 0 8px rgba(93, 149, 242, .5);
+    -webkit-box-shadow: 0 0 8px rgba(93, 149, 242, 3);
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    50.01% {
+        opacity: 0;
+    }
+    /* ע�����ﶨ��50.01%����͸����Ϊ��������������˸Ч�� */
+    100% {
+        opacity: 0;
+    }
+}
+
+/* ��Ӽ�����ǰ׺ */
+
+@-webkit-keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    50.01% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-moz-keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    50.01% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-ms-keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    50.01% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@-o-keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    50.01% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+

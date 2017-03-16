@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.music.mapper.ArtistInfoDao">
+    <select id="find"  resultType="ArtistInfo" parameterType="com.dao.music.base.daomain.Page">
+        select * from (select ROW_NUMBER()OVER(order by TB_ARTIST.id) rownum,TB_ARTIST.*,TB_MYFILE.url imgurl,TB_ZD.text sexval from TB_ARTIST left join TB_MYFILE on TB_MYFILE.id=TB_ARTIST.imgid left join TB_ZD on TB_ZD.code=TB_ARTIST.sex
+        <where>
+            TB_ZD.type='sex'
+            <if test="country!='' and country!=null">
+                and TB_ARTIST.country=#{country}
+            </if>
+        </where>)A  where A.rownum between  #{pagestart} and #{pageend}
+    </select>
+
+    <select id="findById"  resultType="ArtistInfo" parameterType="ArtistInfo">
+        select TB_ARTIST.*,TB_MYFILE.url imgurl,TB_ZD.text sexval from TB_ARTIST left join TB_MYFILE on TB_MYFILE.id=TB_ARTIST.imgid left join TB_ZD on TB_ZD.code=TB_ARTIST.sex where TB_ZD.type='sex' and TB_ARTIST.id=#{id}
+    </select>
+
+
+    <select id="findByRonum" parameterType="java.lang.Long" resultType="ArtistInfo">
+        select * from(select ROW_NUMBER()OVER(order by TB_ARTIST.id) rownum,TB_ARTIST.*,TB_MYFILE.url imgurl,TB_ZD.text sexval from TB_ARTIST left join TB_MYFILE on TB_MYFILE.id=TB_ARTIST.imgid left join TB_ZD on TB_ZD.code=TB_ARTIST.sex where TB_ZD.type='sex')A where A.rownum=#{rownum}
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        select count(*) from (select TB_ARTIST.*,TB_MYFILE.url imgurl,TB_ZD.text sexval from TB_ARTIST left join
+        TB_MYFILE on TB_MYFILE.id=TB_ARTIST.imgid left join TB_ZD on TB_ZD.code=TB_ARTIST.sex
+        <where>
+        TB_ZD.type='sex'
+<if test="country!='' and country!=null"> and TB_ARTIST.country=#{country}</if>
+
+        </where>
+        )A
+    </select>
+
+
+    <select id="findBySearch" resultType="ArtistInfo" parameterType="com.dao.music.base.daomain.Page">
+         select * from (select ROW_NUMBER()OVER(order by B.id) rownum,B.* from (select  TB_ZD.type,TB_ARTIST.*,TB_MYFILE.url imgurl,TB_ZD.text sexval from TB_ARTIST left join TB_MYFILE on TB_MYFILE.id=TB_ARTIST.imgid left join TB_ZD on TB_ZD.code=TB_ARTIST.sex
+       where
+
+
+                 TB_ARTIST.country like #{search} or TB_ARTIST.name like  #{search} or TB_ZD.text like  #{search})B where B.type='sex'
+      )A  where A.rownum between  #{pagestart} and #{pageend}
+    </select>
+
+    <select id="SearchTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+
+        select count(*) from (select  TB_ZD.type,TB_ARTIST.*,TB_MYFILE.url imgurl,TB_ZD.text sexval from TB_ARTIST left join TB_MYFILE on TB_MYFILE.id=TB_ARTIST.imgid left join TB_ZD on TB_ZD.code=TB_ARTIST.sex
+       where
+
+
+                 TB_ARTIST.country like  #{search} or TB_ARTIST.name like #{search} or TB_ZD.text like #{search})B where B.type='sex'
+
+    </select>
+
+
+
+</mapper>

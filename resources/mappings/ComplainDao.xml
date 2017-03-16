@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.music.mapper.ComplainDao">
+    <insert id="insert" parameterType="Complain">
+        INSERT INTO TB_COMPLAIN(
+        <trim suffixOverrides=",">
+            <if test="obj!=null and obj!=''">
+                obj,
+            </if>
+            <if test="objname!=null and objname!=''">
+                objname,
+            </if>
+            <if test="objcontent!=null and objcontent!=''">
+                objcontent,
+            </if>
+            <if test="addtime!=null and addtime!=''">
+                addtime
+            </if>
+        </trim>
+        ) VALUES (
+        <trim suffixOverrides=",">
+            <if test="obj!=null and obj!=''">
+                #{obj},
+            </if>
+
+            <if test="objname!=null and objname!=''">
+                #{objname},
+            </if>
+            <if test="objcontent!=null and objcontent!=''">
+                #{objcontent},
+            </if>
+            <if test="addtime!=null and addtime!=''">
+                #{addtime}
+            </if>
+        </trim>
+        )
+    </insert>
+
+
+    <select id="find" parameterType="com.dao.music.base.daomain.Page" resultType="Complain">
+      SELECT * FROM (select ROW_NUMBER()OVER(order by TB_COMPLAIN.id) rownum,TB_COMPLAIN.* FROM TB_COMPLAIN)A where A.rownum between  #{pagestart} and #{pageend}
+    </select>
+
+
+    <select id="getTotal" parameterType="com.dao.music.base.daomain.Page" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM TB_COMPLAIN
+    </select>
+
+    <delete id="deleteById" parameterType="Complain">
+        DELETE FROM TB_COMPLAIN WHERE TB_COMPLAIN.id=#{id}
+    </delete>
+</mapper>

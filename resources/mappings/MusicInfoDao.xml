@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.music.mapper.MusicInfoDao">
+    <select id="find" resultType="MusicInfo" parameterType="com.dao.music.base.daomain.Page">
+        select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by TB_MUSIC.id)
+        rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC
+        left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left
+        join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid
+        <where>
+            <if test="type!=null and type!='' or type==0">
+                TYPE=#{type}
+            </if>
+            <if test="albumid!=null and albumid!=''">
+                and TB_ALBUM.id=#{albumid}
+            </if>
+            <if test="artistid!=null and artistid!=''">
+                and TB_ARTIST.id=#{artistid}
+            </if>
+
+            and TB_MUSIC.id in
+            (
+            select distinct D.musicid from
+            (select * from TB_MUSICANDTYPE where typeid in(
+            select id from TB_MUSICTYPE
+            <where>
+                <if test=" country!=null and country!=''">typename=#{country}</if>
+            </where>
+            ))D,(
+            select * from TB_MUSICANDTYPE where typeid in(
+            select id from TB_MUSICTYPE
+            <where>
+                <if test=" genre!=null and genre!=''">typename=#{genre}</if>
+            </where>
+            ))B,(
+
+            select * from TB_MUSICANDTYPE where typeid in(
+            select id from TB_MUSICTYPE
+            <where>
+                <if test="years!=null and years!=''">typename=#{years}</if>
+            </where>
+            ))C where D.musicid=B.musicid and D.musicid=C.musicid
+            )
+        </where>
+        )A left join TB_MYFILE on A.poster=TB_MYFILE.id where A.rownum between #{pagestart} and #{pageend}
+    </select>
+
+
+    <select id="findMusicByRanking" resultType="MusicRanking" parameterType="com.dao.music.base.daomain.Page">
+select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by (0.5*downloadcount+0.3*collectcount+0.2*playcount) desc) rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname,TB_ARTIST.info artistinfo,TB_ARTIST.sex,(0.5*downloadcount+0.3*collectcount+0.2*playcount) rank,TB_ZD.text sexval from TB_MUSIC left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid  left join TB_ZD on TB_ARTIST.sex=TB_ZD.code where TB_ZD.type='sex' and TB_MUSIC.TYPE=#{type})A left join TB_MYFILE on A.poster=TB_MYFILE.id
+where A.rownum between   #{pagestart} and #{pageend}
+
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        select count(*) from TB_MUSIC left join TB_ALBUM on TB_ALBUM.id=TB_MUSIC.albumid left join TB_ARTIST on
+        TB_MUSIC.artistid=TB_ARTIST.id
+        <where>
+            <if test="type!=null and type!='' or type==0">
+                TYPE=#{type}
+            </if>
+            <if test="albumid!=null and albumid!=''">
+                and TB_ALBUM.id=#{albumid}
+            </if>
+
+            <if test="artistid!=null and artistid!=''">
+                and TB_ARTIST.id=#{artistid}
+            </if>
+
+            and TB_MUSIC.id in(
+
+            select distinct D.musicid from
+            (select * from TB_MUSICANDTYPE where typeid in(
+            select id from TB_MUSICTYPE
+            <where>
+                <if test=" country!=null and country!=''">typename=#{country}</if>
+            </where>
+            ))D,(
+            select * from TB_MUSICANDTYPE where typeid in(
+            select id from TB_MUSICTYPE
+            <where>
+                <if test=" genre!=null and genre!=''">typename=#{genre}</if>
+            </where>
+            ))B,(
+
+            select * from TB_MUSICANDTYPE where typeid in(
+            select id from TB_MUSICTYPE
+            <where>
+                <if test="years!=null and years!=''">typename=#{years}</if>
+            </where>
+            ))C where D.musicid=B.musicid and D.musicid=C.musicid
+            )
+        </where>
+    </select>
+
+    <select id="findById" parameterType="MusicInfo" resultType="MusicInfo">
+        select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by TB_MUSIC.id) rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid)A left join TB_MYFILE on A.poster=TB_MYFILE.id where  A.id=#{id}
+    </select>
+
+    <select id="findByRonum" parameterType="MusicInfo" resultType="MusicInfo">
+        select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by TB_MUSIC.id) rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid WHERE type=#{type})A left join TB_MYFILE on A.poster=TB_MYFILE.id where  A.rownum=#{num}
+    </select>
+
+
+    <!--<select id="findMusicByGroups" resultType="MusicInfo" parameterType="com.dao.music.base.daomain.Page" >-->
+    <!--select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by TB_MUSIC.id) rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid where TYPE=#{type} and TB_MUSIC.id in-->
+    <!--(-->
+    <!--select distinct  D.musicid  from-->
+    <!--(select  * from TB_MUSICANDTYPE where typeid in(-->
+    <!--select id from TB_MUSICTYPE-->
+    <!--<where>-->
+    <!--<if test=" country!=null and country!=''"> typename=#{country}</if>-->
+    <!--</where>-->
+    <!--))D,(-->
+    <!--select  * from TB_MUSICANDTYPE where typeid in(-->
+    <!--select id from TB_MUSICTYPE-->
+    <!--<where>-->
+    <!--<if test=" genre!=null and genre!=''"> typename=#{genre}</if>-->
+    <!--</where>-->
+    <!--))B,(-->
+
+    <!--select  * from TB_MUSICANDTYPE where typeid in(-->
+    <!--select id from TB_MUSICTYPE-->
+    <!--<where>-->
+    <!--<if test="years!=null and years!=''">  typename=#{years}</if>-->
+    <!--</where>-->
+    <!--))C  where D.musicid=B.musicid and D.musicid=C.musicid-->
+    <!--)-->
+    <!--)A left join TB_MYFILE on A.poster=TB_MYFILE.id where  A.rownum between  #{pagestart} and #{pageend}-->
+    <!--</select>-->
+
+    <select id="findMusicBySearch" resultType="MusicInfo" parameterType="com.dao.music.base.daomain.Page">
+select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by TB_MUSIC.id) rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid where TB_MUSIC.type=#{type} and
+TB_MUSIC.id
+in(
+select t1.id from TB_MUSIC t1 left join TB_ARTIST on TB_ARTIST.id=t1.artistid  left join TB_ALBUM on TB_ALBUM.id=t1.albumid where t1.id in(select musicid from TB_MUSICANDTYPE LEFT JOIN TB_MUSICTYPE on TB_MUSICANDTYPE.typeid=TB_MUSICTYPE.id where typename=#{search}) OR TB_ARTIST.name like #{search} OR TB_ALBUM.name like #{search} OR TB_MUSIC.name like #{search}))
+A left join TB_MYFILE on A.poster=TB_MYFILE.id where A.rownum between  #{pagestart} and #{pageend}
+</select>
+
+    <select id="searchTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        select count(*) from (select ROW_NUMBER()OVER(order by TB_MUSIC.id) rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid where TB_MUSIC.type=#{type} and
+TB_MUSIC.id
+in(
+select t1.id from TB_MUSIC t1 left join TB_ARTIST on TB_ARTIST.id=t1.artistid  left join TB_ALBUM on TB_ALBUM.id=t1.albumid where t1.id in(select musicid from TB_MUSICANDTYPE LEFT JOIN TB_MUSICTYPE on TB_MUSICANDTYPE.typeid=TB_MUSICTYPE.id where typename=#{search}) OR TB_ARTIST.name like #{search} OR TB_ALBUM.name like #{search} OR TB_MUSIC.name like #{search}))
+A left join TB_MYFILE on A.poster=TB_MYFILE.id
+    </select>
+
+    <select id="findMusicByUser" resultType="MusicInfo" parameterType="com.dao.music.base.daomain.Page">
+        select A.*,TB_MYFILE.url posterurl from (select ROW_NUMBER()OVER(order by TB_MUSIC.id)
+        rownum,TB_MUSIC.*,TB_MYFILE.url,TB_MYFILE.path,TB_ALBUM.name albumname,TB_ARTIST.name artistname from TB_MUSIC
+        left join TB_ARTIST on TB_ARTIST.id=TB_MUSIC.artistid left join TB_ALBUM on TB_MUSIC.albumid=TB_ALBUM.id left
+        join TB_MYFILE on TB_MYFILE.id=TB_MUSIC.musicid
+        <where>
+            <if test="type!=null and type!=''">
+                TYPE=#{type} and
+            </if>
+            TB_MUSIC.id in
+            (
+            SELECT musicid FROM TB_COLLECTANDMUSICLIST where userid=#{userid}
+            )
+        </where>
+        )A left join TB_MYFILE on A.poster=TB_MYFILE.id where A.rownum between #{pagestart} and #{pageend}
+    </select>
+
+    <select id="getUserMusicTotal" resultType="java.lang.Long" parameterType="com.dao.music.base.daomain.Page">
+        select count(*) from TB_MUSIC left join TB_ALBUM on TB_ALBUM.id=TB_MUSIC.albumid left join TB_ARTIST on
+        TB_MUSIC.artistid=TB_ARTIST.id
+        <where>
+            <if test="type!=null and type!=''">
+                TYPE=#{type} and
+            </if>
+            TB_MUSIC.id in
+            (
+            SELECT musicid FROM TB_COLLECTANDMUSICLIST where userid=#{userid}
+            )
+        </where>
+    </select>
+
+
+    <update id="updateMusic" parameterType="Music">
+        update TB_MUSIC
+        <set>
+            <if test="name != null and name!= ''">
+                name=#{name},
+            </if>
+            <if test="releasetime != null and releasetime!= ''">
+                releasetime=#{releasetime},
+            </if>
+            <if test="info != null and info!= ''">
+                info=#{info},
+            </if>
+            <if test="playcount != null and playcount!= ''or playcount==0">
+                playcount=#{playcount,javaType=INTEGER,jdbcType=BIGINT},
+            </if>
+            <if test="collectcount != null and collectcount!= '' or collectcount==0">
+                collectcount=#{collectcount,javaType=INTEGER,jdbcType=BIGINT},
+            </if>
+            <if test="downloadcount != null and downloadcount!= '' or downloadcount==0">
+                downloadcount=#{downloadcount,javaType=INTEGER,jdbcType=BIGINT},
+            </if>
+            <if test="musicid != null and musicid!= ''">
+                musicid=#{musicid,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="albumid != null and albumid!= ''">
+                albumid=#{albumid,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="artistid != null and artistid!= ''">
+                artistid=#{artistid,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="time != null and time!= ''">
+                time=#{time},
+            </if>
+            <if test="poster != null and poster!= ''">
+                poster=#{poster,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="type != null and type!= '' or type==0">
+                type=#{type,javaType=INTEGER,jdbcType=SMALLINT},
+            </if>
+
+        </set>
+        where id=#{id}
+
+    </update>
+    <insert id="insert" parameterType="Music">
+        INSERT INTO TB_MUSIC(
+        <trim suffixOverrides=",">
+            <if test="name != null and name!= ''">
+                name,
+            </if>
+            <if test="releasetime != null and releasetime!= ''">
+                releasetime,
+            </if>
+            <if test="info != null and info!= ''">
+                info,
+            </if>
+            <if test="playcount != null and playcount!= ''or playcount==0">
+                playcount,
+            </if>
+            <if test="collectcount != null and collectcount!= '' or collectcount==0">
+                collectcount,
+            </if>
+            <if test="downloadcount != null and downloadcount!= '' or downloadcount==0">
+                downloadcount,
+            </if>
+            <if test="musicid != null and musicid!= ''">
+                musicid,
+            </if>
+            <if test="albumid != null and albumid!= ''">
+                albumid,
+            </if>
+            <if test="artistid != null and artistid!= ''">
+                artistid,
+            </if>
+            <if test="time != null and time!= ''">
+                time,
+            </if>
+            <if test="poster != null and poster!= ''">
+                poster,
+            </if>
+            <if test="type != null and type!= '' or type==0">
+                type,
+            </if>
+        </trim>
+        ) VALUE (
+        <trim suffixOverrides=",">
+            <if test="name != null and name!= ''">
+                #{name},
+            </if>
+            <if test="releasetime != null and releasetime!= ''">
+                #{releasetime},
+            </if>
+            <if test="info != null and info!= ''">
+                #{info},
+            </if>
+            <if test="playcount != null and playcount!= ''or playcount==0">
+                #{playcount,javaType=INTEGER,jdbcType=BIGINT},
+            </if>
+            <if test="collectcount != null and collectcount!= '' or collectcount==0">
+                #{collectcount,javaType=INTEGER,jdbcType=BIGINT},
+            </if>
+            <if test="downloadcount != null and downloadcount!= '' or downloadcount==0">
+                #{downloadcount,javaType=INTEGER,jdbcType=BIGINT},
+            </if>
+            <if test="musicid != null and musicid!= ''">
+                #{musicid,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="albumid != null and albumid!= ''">
+                #{albumid,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="artistid != null and artistid!= ''">
+                #{artistid,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="time != null and time!= ''">
+                #{time},
+            </if>
+            <if test="poster != null and poster!= ''">
+                #{poster,javaType=Long,jdbcType=BIGINT},
+            </if>
+            <if test="type != null and type!= '' or type==0">
+                #{type,javaType=INTEGER,jdbcType=SMALLINT},
+            </if>
+        </trim>
+        )
+
+    </insert>
+
+
+    <delete id="deleteById" parameterType="MusicInfo">
+          DELETE FROM TB_MUSIC WHERE TB_MUSIC.id=#{id}
+    </delete>
+
+    <select id="findMusicByPath" parameterType="MusicInfo" resultType="MusicInfo">
+        SELECT * FROM TB_MUSIC WHERE TB_MUSIC.musicid=#{musicid}
+    </select>
+    <insert id="saveType" parameterType="MusicInfo">
+        INSERT INTO TB_MUSICANDTYPE(
+        <trim suffixOverrides=",">
+        <if test="typeid != null and typeid!= '' or typeid==0">
+            typeid,
+        </if>
+        <if test="musicid != null and musicid!= ''">
+            musicid,
+        </if>
+        </trim>
+        )VALUES (
+        <trim suffixOverrides=",">
+        <if test="typeid != null and typeid!= '' or typeid==0">
+            #{typeid},
+        </if>
+        <if test="musicid != null and musicid!= ''">
+            #{musicid},
+        </if>
+        </trim>
+        )
+    </insert>
+
+
+</mapper>
